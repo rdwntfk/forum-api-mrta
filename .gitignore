@@ -1,0 +1,8 @@
+node_modules
+yarn.lock
+package-lock.json
+.idea
+config/database/test.json
+coverage
+.env
+forum-api-mrta-app-server.pem
