@@ -1,6 +1,7 @@
 const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const CommentRepository = require('../../../../Domains/comments/CommentRepository');
 const CommentReplyRepository = require('../../../../Domains/comment_replies/CommentReplyRepository');
+const CommentLikeRepository = require('../../../../Domains/comment_likes/CommentLikeRepository');
 const ThreadDetail = require('../../../../Domains/threads/entities/ThreadDetail');
 const CommentDetail = require('../../../../Domains/comments/entities/CommentDetail');
 const CommentReplyDetail = require('../../../../Domains/comment_replies/entities/CommentReplyDetail');
@@ -40,6 +41,7 @@ describe('ThreadDetailUseCase', () => {
           date: new Date('2022-08-23T17:22:33.555Z'),
           content: 'What a case. For Real?',
           is_deleted: false,
+          likeCount: 0,
           replies: [
             new CommentReplyDetail({
               id: 'reply-123',
@@ -57,6 +59,7 @@ describe('ThreadDetailUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockCommentReplyRepository = new CommentReplyRepository();
+    const mockCommentLikeRepository = new CommentLikeRepository();
 
     mockThreadRepository.verifyThreadIsAvailable = jest
       .fn()
@@ -90,11 +93,19 @@ describe('ThreadDetailUseCase', () => {
           is_deleted: false,
         },
       ]));
+    mockCommentLikeRepository.getCommentLikeByThreadId = jest.fn().mockImplementation(() =>
+      Promise.resolve([
+        {
+          comment_id: 'comment-q_123',
+          like_count: 0,
+        },
+      ]));
 
     const threadDetailUseCase = new ThreadDetailUseCase({
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       commentReplyRepository: mockCommentReplyRepository,
+      commentLikeRepository: mockCommentLikeRepository,
     });
 
     const thread = await threadDetailUseCase.execute(threadId);
@@ -103,5 +114,6 @@ describe('ThreadDetailUseCase', () => {
     expect(mockThreadRepository.getThreadDetail).toHaveBeenCalledWith(threadId);
     expect(mockCommentRepository.getCommentsThread).toHaveBeenCalledWith(threadId);
     expect(mockCommentReplyRepository.getCommentReplies).toHaveBeenCalledWith(threadId);
+    expect(mockCommentLikeRepository.getCommentLikeByThreadId).toHaveBeenCalledWith(threadId);
   });
 });
