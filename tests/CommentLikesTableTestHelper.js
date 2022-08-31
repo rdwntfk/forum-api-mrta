@@ -22,7 +22,7 @@ const CommentLikesTableHelper = {
 
   async checkIsCommentLiked(comment, owner) {
     const query = {
-      text: 'SELECT * FROM comment_likes WHERE comment = $1 and owner = $2',
+      text: 'SELECT id FROM comment_likes WHERE comment = $1 and owner = $2',
       values: [comment, owner],
     };
 

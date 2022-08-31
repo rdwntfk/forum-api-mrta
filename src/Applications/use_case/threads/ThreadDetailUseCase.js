@@ -25,14 +25,14 @@ class ThreadDetailUseCase {
     const getCommentLikes = await this._commentLikeRepository.getCommentLikeByThreadId(threadId);
 
     const commentWithReply = getCommentsThread.map((comment) => {
-      const likes = getCommentLikes.find((like) => like.comment === comment.id);
+      const likes = getCommentLikes.filter((like) => like.comment === comment.id);
       const replies = getCommentReplies
         .filter((reply) => reply.comment === comment.id)
         .map((reply) => new CommentReplyDetail(reply));
 
       return new CommentDetail({
         ...comment,
-        likeCount: typeof likes !== 'undefined' ? likes.like_count : 0,
+        likeCount: likes.length,
         replies,
       });
     });

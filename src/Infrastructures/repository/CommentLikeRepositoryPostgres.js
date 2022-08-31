@@ -40,11 +40,10 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
 
   async getCommentLikeByThreadId(threadId) {
     const query = {
-      text: `SELECT cmtlk.comment, COUNT(cmtlk.id) AS like_count FROM comment_likes cmtlk 
+      text: `SELECT cmtlk.comment FROM comment_likes cmtlk 
       JOIN comments cmt ON cmt.id = cmtlk.comment
       JOIN threads thr ON thr.id = cmt.thread
-      WHERE thr.id = $1
-      GROUP BY cmtlk.comment`,
+      WHERE thr.id = $1`,
       values: [threadId],
     };
 

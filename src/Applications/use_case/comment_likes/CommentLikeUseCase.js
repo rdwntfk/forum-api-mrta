@@ -7,14 +7,15 @@ class CommentLikeUseCase {
 
   async execute(payload) {
     this._validatePayload(payload);
-    await this._threadRepository.verifyThreadIsAvailable(payload.threadId);
-    await this._commentRepository.verifyCommentIsAvailable(payload.commentId);
-    const likedComment = await this._commentLikeRepository.checkIsCommentLiked(payload);
+    const { threadId, commentId, owner } = payload;
+    await this._threadRepository.verifyThreadIsAvailable(threadId);
+    await this._commentRepository.verifyCommentIsAvailable(commentId);
+    const likedComment = await this._commentLikeRepository.checkIsCommentLiked(commentId, owner);
 
     if (likedComment.length === 0) {
-      await this._commentLikeRepository.addCommentLike(payload);
+      await this._commentLikeRepository.addCommentLike(commentId, owner);
     } else {
-      await this._commentLikeRepository.deleteCommentLike(payload);
+      await this._commentLikeRepository.deleteCommentLike(commentId, owner);
     }
   }
 

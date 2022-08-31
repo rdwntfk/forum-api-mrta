@@ -57,8 +57,14 @@ describe('CommentLikeUseCase', () => {
 
     expect(mockThreadRepository.verifyThreadIsAvailable).toBeCalledWith(payload.threadId);
     expect(mockCommentRepository.verifyCommentIsAvailable).toBeCalledWith(payload.commentId);
-    expect(mockCommentLikeRepository.checkIsCommentLiked).toBeCalledWith(payload);
-    expect(mockCommentLikeRepository.addCommentLike).toBeCalledWith(payload);
+    expect(mockCommentLikeRepository.checkIsCommentLiked).toBeCalledWith(
+      payload.commentId,
+      payload.owner,
+    );
+    expect(mockCommentLikeRepository.addCommentLike).toBeCalledWith(
+      payload.commentId,
+      payload.owner,
+    );
   });
 
   it('should orchestrating unlike comment action correctly', async () => {
@@ -87,7 +93,13 @@ describe('CommentLikeUseCase', () => {
 
     expect(mockThreadRepository.verifyThreadIsAvailable).toBeCalledWith(payload.threadId);
     expect(mockCommentRepository.verifyCommentIsAvailable).toBeCalledWith(payload.commentId);
-    expect(mockCommentLikeRepository.checkIsCommentLiked).toBeCalledWith(payload);
-    expect(mockCommentLikeRepository.deleteCommentLike).toBeCalledWith(payload);
+    expect(mockCommentLikeRepository.checkIsCommentLiked).toBeCalledWith(
+      payload.commentId,
+      payload.owner,
+    );
+    expect(mockCommentLikeRepository.deleteCommentLike).toBeCalledWith(
+      payload.commentId,
+      payload.owner,
+    );
   });
 });

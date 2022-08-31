@@ -5,7 +5,6 @@ const pool = require('../../database/postgres/pool');
 const container = require('../../container');
 const createServer = require('../createServer');
 const CommentLikesTableTestHelper = require('../../../../tests/CommentLikesTableTestHelper');
-const { payload } = require('@hapi/hapi/lib/validation');
 
 describe('/threads/{threadId}/comments/{commentId}/likes', () => {
   afterAll(async () => {
@@ -246,41 +245,18 @@ describe('/threads/{threadId}/comments/{commentId}/likes', () => {
 
       const responseAuth = JSON.parse(authentication.payload);
 
-      const thread = await server.inject({
-        method: 'POST',
-        url: '/threads',
-        payload: {
-          title: 'Police has been murdered by his mate.',
-          body: 'This case was viral in Indonesian for long time since Q3 2022. The murder was found on Automation Program Developed By Dicoding',
-        },
-        headers: { Authorization: `Bearer ${responseAuth.data.accessToken}` },
-      });
-
-      const threadResponse = JSON.parse(thread.payload);
-
-      const comment = await server.inject({
-        method: 'POST',
-        url: `/threads/${threadResponse.data.addedThread.id}/comments`,
-        payload: {
-          content: 'What a case, For Real?',
-        },
-        headers: { Authorization: `Bearer ${responseAuth.data.accessToken}` },
-      });
-
-      const commentResponse = JSON.parse(comment.payload);
-
       const response = await server.inject({
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${responseAuth.data.accessToken}`,
         },
-        url: `/threads//threads/anyThreadId/comments/${commentResponse.data.addedComment.id}/likes`,
+        url: '/threads/anyThreadId/comments/anyCommentId/likes',
       });
 
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('thread not found');
+      expect(responseJson.message).toEqual('thread not found in database');
     });
 
     it('should throw not found error when comment not exist', async () => {
@@ -343,7 +319,7 @@ describe('/threads/{threadId}/comments/{commentId}/likes', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(404);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('comment not found');
+      expect(responseJson.message).toEqual('comment not found in database');
     });
   });
 });

@@ -41,7 +41,7 @@ describe('ThreadDetailUseCase', () => {
           date: new Date('2022-08-23T17:22:33.555Z'),
           content: 'What a case. For Real?',
           is_deleted: false,
-          likeCount: 2,
+          likeCount: 0,
           replies: [
             new CommentReplyDetail({
               id: 'reply-123',
@@ -97,7 +97,7 @@ describe('ThreadDetailUseCase', () => {
       Promise.resolve([
         {
           comment_id: 'comment-q_123',
-          like_count: 2,
+          like_count: 0,
         },
       ]));
 

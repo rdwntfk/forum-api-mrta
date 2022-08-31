@@ -53,8 +53,7 @@ describe('CommentLikeRepositoryPostgres', () => {
         payload.owner,
       );
 
-      expect(likedComment[0].comment).toEqual(payload.comment);
-      expect(likedComment[0].owner).toEqual(payload.owner);
+      expect(likedComment).toHaveLength(1);
     });
   });
 
@@ -150,7 +149,7 @@ describe('CommentLikeRepositoryPostgres', () => {
         owner: 'user-123',
       };
 
-      await CommentLikesTableHelper.addCommentLike(payload);
+      await CommentLikesTableHelper.addCommentLike(payload.comment, payload.owner);
 
       const commentLikeRepositoryPostgres = new CommentLikeRepositoryPostgres(pool, {});
 
@@ -200,7 +199,7 @@ describe('CommentLikeRepositoryPostgres', () => {
 
       const likeCount = await commentLikeRepositoryPostgres.getCommentLikeByThreadId(threadId);
 
-      expect(likeCount[0].like_count).toEqual('2');
+      expect(likeCount).toHaveLength(2);
     });
 
     it('should return empty array when comment no have like', async () => {

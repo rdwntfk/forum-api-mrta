@@ -17,6 +17,7 @@ describe('a CommentDetail entities', () => {
       content: 4213,
       is_deleted: {},
       replies: true,
+      likeCount: '2',
     };
 
     expect(() => new CommentDetail(payload)).toThrowError(
@@ -32,6 +33,7 @@ describe('a CommentDetail entities', () => {
       content: 'What? Are you kidding with me?',
       is_deleted: true,
       replies: [],
+      likeCount: 3,
     };
 
     const comments = new CommentDetail(payload);
@@ -42,6 +44,7 @@ describe('a CommentDetail entities', () => {
       date: '2022-08-22T17:30:15.196Z',
       content: '**komentar telah dihapus**',
       replies: [],
+      likeCount: 3,
     };
 
     expect(comments).toEqual(expectedCommentDetailAfterDelete);
@@ -55,6 +58,7 @@ describe('a CommentDetail entities', () => {
       content: 'I don`t think so.',
       is_deleted: false,
       replies: [],
+      likeCount: 0,
     };
 
     const expectedCommentDetail = {
@@ -63,6 +67,7 @@ describe('a CommentDetail entities', () => {
       date: '2022-08-21T23:24:33.766Z',
       content: 'I don`t think so.',
       replies: [],
+      likeCount: 0,
     };
 
     const commentDetail = new CommentDetail(payload);
