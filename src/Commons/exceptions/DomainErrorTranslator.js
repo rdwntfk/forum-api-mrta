@@ -107,6 +107,12 @@ DomainErrorTranslator._directories = {
   'COMMENT_REPLY_DETAIL.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
     'the comment reply detail cant be shown because the data type doesn`t match',
   ),
+  'COMMENT_LIKE_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY': new InvariantError(
+    'can`t liked this comment because the required property doesn`t exist',
+  ),
+  'COMMENT_LIKE_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION': new InvariantError(
+    'can`t liked this comment because the data type doesn`t match',
+  ),
 };
 
 module.exports = DomainErrorTranslator;
